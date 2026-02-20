@@ -1,0 +1,97 @@
+#include <iostream>   // Digunakan untuk operasi input dan output
+using namespace std;  // Agar tidak perlu menulis std:: berulang kali
+
+int main() {
+
+    int jumlahData;  // Menyimpan banyaknya elemen yang akan dimasukkan user
+
+    // Meminta jumlah data dari user
+    cout << "Berapa jumlah elemen yang ingin dimasukkan? ";
+    cin >> jumlahData;
+
+    // Mengecek apakah input valid
+    if (jumlahData <= 0) {
+        cout << "Input tidak valid, jumlah harus lebih dari nol." << endl;
+        return 0;  // Mengakhiri program jika input salah
+    }
+
+    // Membuat array dinamis sesuai jumlah yang dimasukkan
+    int *data = new int[jumlahData];
+
+    // =========================
+    // Proses pengisian array
+    // =========================
+
+    int counter = 0;  // Variabel bantu untuk perulangan
+
+    while (counter < jumlahData) {
+
+        // Meminta nilai tiap elemen
+        cout << "Input nilai ke-" << counter << " : ";
+        cin >> *(data + counter);  // Mengisi nilai menggunakan pointer
+
+        counter++;  // Berpindah ke posisi berikutnya
+    }
+
+    // =========================
+    // Menampilkan isi array
+    // =========================
+
+    cout << "\nData yang dimasukkan: ";
+
+    counter = 0;  // Reset penghitung
+
+    while (counter < jumlahData) {
+
+        // Menampilkan isi elemen tanpa menggunakan indeks langsung
+        cout << *(data + counter) << " ";
+
+        counter++;  // Lanjut ke elemen berikutnya
+    }
+
+    // =========================
+    // Menghitung statistik data
+    // =========================
+
+    int nilaiTerbesar = *data;   // Asumsi awal nilai terbesar
+    int nilaiTerkecil = *data;   // Asumsi awal nilai terkecil
+    int total = 0;               // Untuk menyimpan akumulasi jumlah
+
+    counter = 0;  // Reset penghitung lagi
+
+    while (counter < jumlahData) {
+
+        int nilaiSekarang = *(data + counter);  // Ambil nilai saat ini
+
+        total += nilaiSekarang;  // Tambahkan ke total
+
+        // Bandingkan untuk mencari nilai terbesar
+        if (nilaiSekarang > nilaiTerbesar) {
+            nilaiTerbesar = nilaiSekarang;
+        }
+
+        // Bandingkan untuk mencari nilai terkecil
+        if (nilaiSekarang < nilaiTerkecil) {
+            nilaiTerkecil = nilaiSekarang;
+        }
+
+        counter++;  // Lanjut ke elemen berikutnya
+    }
+
+    // Hitung rata-rata
+    double rataRata = static_cast<double>(total) / jumlahData;
+
+    // =========================
+    // Menampilkan hasil akhir
+    // =========================
+
+    cout << "\n\nNilai terbesar  : " << nilaiTerbesar;
+    cout << "\nNilai terkecil  : " << nilaiTerkecil;
+    cout << "\nTotal seluruh   : " << total;
+    cout << "\nRata-rata       : " << rataRata << endl;
+
+    // Membersihkan memori agar tidak terjadi memory leak
+    delete[] data;
+
+    return 0;  // Program selesai
+}
