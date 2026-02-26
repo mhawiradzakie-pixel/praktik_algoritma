@@ -7,7 +7,7 @@ struct Buku {
     int harga;
 };
 
-// ======SEKUENSIAL======
+// ====== SEKUENSIAL ======
 int cariSekuensial(Buku data[], int n, string target) {
     for (int i = 0; i < n; i++) {
         if (data[i].nama == target) {
@@ -17,7 +17,7 @@ int cariSekuensial(Buku data[], int n, string target) {
     return -1;
 }
 
-// ======BINER=======
+// ====== BINER ======
 int cariBiner(Buku data[], int n, string target) {
     int kiri = 0;
     int kanan = n - 1;
@@ -36,12 +36,14 @@ int cariBiner(Buku data[], int n, string target) {
 }
 
 int main() {
+
+    // DATA SUDAH DIURUTKAN (WAJIB untuk binary search)
     Buku daftarBuku[] = {
-        {"Slank", 80000},
         {"Dewa", 95000},
-        {"Sheila on 7", 75000},
         {"Iwan Fals", 100000},
-        {"Noah", 83000}
+        {"Noah", 83000},
+        {"Sheila on 7", 75000},
+        {"Slank", 80000}
     };
 
     int jumlah = sizeof(daftarBuku) / sizeof(daftarBuku[0]);
@@ -50,17 +52,19 @@ int main() {
     cout << "Masukkan nama buku: ";
     getline(cin, cari);
 
-    // =====Sekuensial=====
+    // ===== Sekuensial =====
     int hasilSeq = cariSekuensial(daftarBuku, jumlah, cari);
-    if (hasilSeq!= -1)
-        cout << "Sekuensial → Harga: " << daftarBuku[hasilSeq].harga << endl;
+    if (hasilSeq != -1)
+        cout << "Sekuensial = Harga: " << daftarBuku[hasilSeq].harga << endl;
     else
-        cout << "Sekuensial → Buku tidak ditemukan";
+        cout << "Sekuensial = Buku tidak ditemukan" << endl;
 
-    // =====Binr=====
+    // ===== Biner =====
     int hasilBin = cariBiner(daftarBuku, jumlah, cari);
     if (hasilBin != -1)
-        cout << "Biner → Harga: " << daftarBuku[hasilBin].harga << endl;
+        cout << "Biner = Harga: " << daftarBuku[hasilBin].harga << endl;
     else
-        cout << "Biner → Buku tidak ditemukan";
+        cout << "Biner = Buku tidak ditemukan" << endl;
+
+    return 0;
 }
