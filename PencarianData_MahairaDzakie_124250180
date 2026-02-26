@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Buku {
+    string nama;
+    int harga;
+};
+
+// ======SEKUENSIAL======
+int cariSekuensial(Buku data[], int n, string target) {
+    for (int i = 0; i < n; i++) {
+        if (data[i].nama == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// ======BINER=======
+int cariBiner(Buku data[], int n, string target) {
+    int kiri = 0;
+    int kanan = n - 1;
+
+    while (kiri <= kanan) {
+        int tengah = (kiri + kanan) / 2;
+
+        if (data[tengah].nama == target)
+            return tengah;
+        else if (data[tengah].nama < target)
+            kiri = tengah + 1;
+        else
+            kanan = tengah - 1;
+    }
+    return -1;
+}
+
+int main() {
+    Buku daftarBuku[] = {
+        {"Slank", 80000},
+        {"Dewa", 95000},
+        {"Sheila on 7", 75000},
+        {"Iwan Fals", 100000},
+        {"Noah", 83000}
+    };
+
+    int jumlah = sizeof(daftarBuku) / sizeof(daftarBuku[0]);
+    string cari;
+
+    cout << "Masukkan nama buku: ";
+    getline(cin, cari);
+
+    // ===== Sekuensial =====
+    int hasilSeq = cariSekuensial(daftarBuku, jumlah, cari);
+    if (hasilSeq!= -1)
+        cout << "Sekuensial → Harga: " << daftarBuku[hasilSeq].harga << endl;
+    else
+        cout << "Sekuensial → Buku tidak ditemukan\n";
+
+    // ===== Biner =====
+    int hasilBin = cariBiner(daftarBuku, jumlah, cari);
+    if (hasilBin != -1)
+        cout << "Biner → Harga: " << daftarBuku[hasilBin].harga << endl;
+    else
+        cout << "Biner → Buku tidak ditemukan\n";
+}
