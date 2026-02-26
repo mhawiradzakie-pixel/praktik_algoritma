@@ -1,0 +1,89 @@
+#include <iostream>
+using namespace std;
+
+struct Buku 
+{
+    char judul[50];
+    int harga;
+};
+
+int cekJudul(char s1[], char s2[]) 
+{
+    int i = 0;
+    while (s1[i] != '\0' || s2[i] != '\0') 
+    {
+        if (s1[i] != s2[i]) 
+        {
+            return s1[i] - s2[i];
+        }
+        i++;
+    }
+    return 0; 
+}
+// Cara Sequential
+int cariSatuSatu(Buku daftar[], int total, char target[]) 
+{
+    for (int i = 0; i<total; i++) 
+    {
+        if (cekJudul(daftar[i].judul, target) == 0) 
+        {
+            return i; 
+        }
+    }
+    return -1; 
+}
+
+// Cara Binary
+int cariBagiDua(Buku daftar[], int total, char target[]) 
+{
+    int awal = 0;
+    int akhir = total - 1;
+
+    while (awal <= akhir) 
+    {
+        int tengah = (awal + akhir) / 2;
+        int hasilCek = cekJudul(daftar[tengah].judul, target);
+
+        if (hasilCek == 0) 
+        {
+            return tengah; 
+        } else if (hasilCek < 0) 
+        {
+            awal = tengah + 1; 
+        } else 
+        {
+            akhir = tengah - 1; 
+        }
+    }
+    return -1;
+}
+
+int main() 
+{
+    Buku rak[5] = 
+    {
+        {"Andaikan Dia Datang", 50000},
+        {"Biarkan Aku Pergi", 75000},
+        {"Cinta Abadi", 60000},
+        {"Jangan Mati Sebelum Ke Ranu Kumbolo", 85000},
+        {"Saat Bersamamu", 70000}
+    };
+
+    char inputUser[50];
+    cout << "=== Program Pencarian Buku ===" << endl;
+    cout << "Cari judul buku: ";
+    cin.getline(inputUser, 50);
+
+    int posisi = cariBagiDua(rak, 5, inputUser);
+
+    cout << "-----------------------" << endl;
+    if (posisi != -1) 
+    {
+        cout << "Ada nih! Harganya: Rp" << rak[posisi].harga << endl;
+    } else 
+    {
+        cout << "Waduh, bukunya nggak ada di rak!" << endl;
+    }
+
+    return 0;
+}
