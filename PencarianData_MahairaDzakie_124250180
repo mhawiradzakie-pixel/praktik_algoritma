@@ -50,17 +50,17 @@ int main() {
     cout << "Masukkan nama buku: ";
     getline(cin, cari);
 
-    // ===== Sekuensial =====
+    // =====Sekuensial=====
     int hasilSeq = cariSekuensial(daftarBuku, jumlah, cari);
     if (hasilSeq!= -1)
         cout << "Sekuensial → Harga: " << daftarBuku[hasilSeq].harga << endl;
     else
-        cout << "Sekuensial → Buku tidak ditemukan\n";
+        cout << "Sekuensial → Buku tidak ditemukan";
 
-    // ===== Biner =====
+    // =====Binr=====
     int hasilBin = cariBiner(daftarBuku, jumlah, cari);
     if (hasilBin != -1)
         cout << "Biner → Harga: " << daftarBuku[hasilBin].harga << endl;
     else
-        cout << "Biner → Buku tidak ditemukan\n";
+        cout << "Biner → Buku tidak ditemukan";
 }
