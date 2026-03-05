@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+void bubbleSort(vector<string> &arr){
+    int n = arr.size();
+    for(int i=0;i<n-1;i++){
+        for(int j=0;j<n-i-1;j++){
+            if(arr[j] > arr[j+1]){
+                swap(arr[j], arr[j+1]);
+            }
+        }
+    }
+}
+
+int partition(vector<string> &arr, int low, int high){
+    string pivot = arr[high];
+    int i = low - 1;
+
+    for(int j=low;j<high;j++){
+        if(arr[j] > pivot){
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[i+1], arr[high]);
+    return i+1;
+}
+
+void quickSort(vector<string> &arr, int low, int high){
+    if(low < high){
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi-1);
+        quickSort(arr, pi+1, high);
+    }
+}
+
+int main(){
+    int n;
+    cout<<"Masukkan jumlah mahasiswa: ";
+    cin>>n;
+    cin.ignore();
+
+    vector<string> nama(n);
+
+    for(int i=0;i<n;i++){
+        cout<<"Nama mahasiswa ke-"<<i+1<<": ";
+        getline(cin,nama[i]);
+    }
+
+    vector<string> bubble = nama;
+    vector<string> quick = nama;
+
+    bubbleSort(bubble);
+
+    cout<<"\nUrutan Ascending (Bubble Sort):\n";
+    for(string x : bubble){
+        cout<<x<<endl;
+    }
+
+    quickSort(quick,0,n-1);
+
+    cout<<"\nUrutan Descending (Quick Sort):\n";
+    for(string x : quick){
+        cout<<x<<endl;
+    }
+
+    return 0;
+}
