@@ -56,14 +56,14 @@ int main(){
 
     bubbleSort(bubble);
 
-    cout<<"\nUrutan Ascending (Bubble Sort):\n";
+    cout<<"Urutan Ascending (Bubble Sort):"<<endl;
     for(string x : bubble){
         cout<<x<<endl;
     }
 
     quickSort(quick,0,n-1);
 
-    cout<<"\nUrutan Descending (Quick Sort):\n";
+    cout<<"Urutan Descending (Quick Sort):"<<endl;
     for(string x : quick){
         cout<<x<<endl;
     }
