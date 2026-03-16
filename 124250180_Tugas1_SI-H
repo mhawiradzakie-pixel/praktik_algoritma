@@ -1,0 +1,272 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+
+using namespace std;
+
+struct Product{
+    char name[60];
+    char category[30];
+    double price;
+    int stock;
+    float rating;
+};
+
+Product arr[100];
+int n = 0;
+
+void loadFile(){
+    FILE *pf = fopen("shopease_db.txt","r");
+
+    if(pf == NULL){
+        return;
+    }
+
+    while(fscanf(pf," %[^|]|%[^|]|%lf|%d|%f\n",
+        arr[n].name,
+        arr[n].category,
+        &arr[n].price,
+        &arr[n].stock,
+        &arr[n].rating) != EOF){
+
+        n++;
+    }
+
+    fclose(pf);
+}
+
+void saveFile(){
+    FILE *pf = fopen("shopease_db.txt","w");
+
+    for(int i=0;i<n;i++){
+        fprintf(pf,"%s|%s|%.0lf|%d|%.1f\n",
+        arr[i].name,
+        arr[i].category,
+        arr[i].price,
+        arr[i].stock,
+        arr[i].rating);
+    }
+
+    fclose(pf);
+}
+
+void tambahProduk(){
+
+    cout<<"\n=== Tambah Produk ===\n";
+
+    cin.ignore();
+
+    cout<<"Nama Produk : ";
+    cin.getline(arr[n].name,60);
+
+    cout<<"Kategori : ";
+    cin.getline(arr[n].category,30);
+
+    cout<<"Harga : ";
+    cin>>arr[n].price;
+
+    cout<<"Stok : ";
+    cin>>arr[n].stock;
+
+    cout<<"Rating : ";
+    cin>>arr[n].rating;
+
+    n++;
+
+    saveFile();
+
+    cout<<"Produk berhasil ditambahkan!"<<endl;
+}
+
+void bubbleSortName(){
+
+    for(int i=0;i<n-1;i++){
+        for(int j=0;j<n-i-1;j++){
+
+            if(strcmp(arr[j].name,arr[j+1].name)>0){
+
+                Product temp=arr[j];
+                arr[j]=arr[j+1];
+                arr[j+1]=temp;
+
+            }
+        }
+    }
+}
+
+int partition(int low,int high){
+
+    float pivot=arr[high].rating;
+    int i=low-1;
+
+    for(int j=low;j<high;j++){
+
+        if(arr[j].rating > pivot){
+
+            i++;
+
+            Product temp=arr[i];
+            arr[i]=arr[j];
+            arr[j]=temp;
+        }
+    }
+
+    Product temp=arr[i+1];
+    arr[i+1]=arr[high];
+    arr[high]=temp;
+
+    return i+1;
+}
+
+void quickSort(int low,int high){
+
+    if(low<high){
+
+        int pi=partition(low,high);
+
+        quickSort(low,pi-1);
+        quickSort(pi+1,high);
+    }
+}
+
+void tampilProduk(){
+
+    int pilih;
+
+    cout<<"\n=== Tampilkan Produk ===\n";
+    cout<<"1. Sort Nama (Ascending - Bubble Sort)"<<endl;
+    cout<<"2. Sort Rating (Descending - Quick Sort)"<<endl;
+    cout<<"Pilih : ";
+    cin>>pilih;
+
+    if(pilih==1){
+
+        bubbleSortName();
+
+    }else if(pilih==2){
+
+        quickSort(0,n-1);
+    }
+
+    cout<<"\n------------------------------------------------------------------\n";
+    cout<<"Nama\t\tKategori\tHarga\tStok\tRating\n";
+    cout<<"------------------------------------------------------------------\n";
+
+    for(int i=0;i<n;i++){
+
+        cout<<arr[i].name<<"\t"
+        <<arr[i].category<<"\t"
+        <<arr[i].price<<"\t"
+        <<arr[i].stock<<"\t"
+        <<arr[i].rating<<endl;
+
+    }
+
+}
+
+void bubbleSortNameForBinary(){
+
+    for(int i=0;i<n-1;i++){
+        for(int j=0;j<n-i-1;j++){
+
+            if(strcmp(arr[j].name,arr[j+1].name)>0){
+
+                Product temp=arr[j];
+                arr[j]=arr[j+1];
+                arr[j+1]=temp;
+
+            }
+        }
+    }
+}
+
+void binarySearch(){
+
+    char key[60];
+
+    cin.ignore();
+
+    cout<<"Cari Nama Produk : "<<endl;
+    cin.getline(key,60);
+
+    bubbleSortNameForBinary();
+
+    int left=0;
+    int right=n-1;
+
+    while(left<=right){
+
+        int mid=(left+right)/2;
+
+        int cmp=strcmp(arr[mid].name,key);
+
+        if(cmp==0){
+
+            cout<<"\nProduk ditemukan!\n";
+
+            cout<<"Nama : "<<arr[mid].name<<endl;
+            cout<<"Kategori : "<<arr[mid].category<<endl;
+            cout<<"Harga : "<<arr[mid].price<<endl;
+            cout<<"Stok : "<<arr[mid].stock<<endl;
+            cout<<"Rating : "<<arr[mid].rating<<endl;
+
+            return;
+        }
+
+        else if(cmp<0){
+
+            left=mid+1;
+        }
+
+        else{
+
+            right=mid-1;
+        }
+    }
+
+    cout<<"\nProduk tidak ditemukan!\n";
+}
+
+int main(){
+
+    loadFile();
+
+    int menu;
+
+    do{
+
+        cout<<"\n====== ShopEase Catalog ======\n";
+        cout<<"1. Tambah Produk"<<endl;
+        cout<<"2. Tampilkan Produk"<<endl;
+        cout<<"3. Cari Produk"<<endl;
+        cout<<"4. Keluar"<<endl;
+        cout<<"Pilih Menu : ";
+        cin>>menu;
+
+        switch(menu){
+
+            case 1:
+                tambahProduk();
+                break;
+
+            case 2:
+                tampilProduk();
+                break;
+
+            case 3:
+                binarySearch();
+                break;
+
+            case 4:
+                saveFile();
+                cout<<"Terima kasih telah menggunakan sistem!"<<endl;
+                break;
+
+            default:
+                cout<<"Menu tidak valid\n";
+
+        }
+
+    }while(menu!=4);
+
+}
